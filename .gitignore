@@ -1,6 +1,10 @@
 __pycache__
+.idea
+.build
 .env
 .history
 .hypothesis/
+venv/
 build/
 reports/
+node_modules
