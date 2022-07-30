@@ -64,6 +64,14 @@ def test_slippage(zap, alice):
 
 @pytest.mark.chain("mainnet")
 @pytest.mark.chain("op")
+def test_revert_low_collat_ratio(zap, alice):
+    amount = int(1e18)
+    with brownie.reverts():
+        zap.deposit(amount, 0, True, {"from": alice, "value": amount})
+
+
+@pytest.mark.chain("mainnet")
+@pytest.mark.chain("op")
 def test_set_approvals(zap, alice, constructor_args):
     seth_token = Contract.from_abi(
         name="sETH", address=constructor_args[1], abi=ERC20_ABI

@@ -17,7 +17,7 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     config.addinivalue_line(
-        "markers", "chain(name): only run the tests for specified chain"
+        "markers", "chain(CHAIN): only run the tests for specified chain"
     )
 
 
