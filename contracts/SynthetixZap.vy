@@ -14,7 +14,6 @@ interface ERC20:
     def balanceOf(_addr: address) -> uint256: view
     def approve(spender: address, amount: uint256): nonpayable
     def transfer(_to: address, amount: uint256): nonpayable
-    def transferFrom(_from: address, _to: address, amount: uint256): nonpayable
 
 interface Booster:
     def deposit(_pid: uint256, amount: uint256, _stake: bool) -> bool: nonpayable
