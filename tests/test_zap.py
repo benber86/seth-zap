@@ -1,4 +1,5 @@
 import pytest
+import brownie
 from brownie import Contract
 
 
@@ -27,7 +28,15 @@ def test_deposit_and_stake_on_convex(zap, alice, constructor_args):
     )
 
 
+@pytest.mark.chain("op")
+def test_deposit_and_stake_on_convex_revert(zap, alice):
+    amount = int(1e18)
+    with brownie.reverts():
+        zap.deposit(amount, 0, True, {"from": alice, "value": amount * 2})
+
+
 @pytest.mark.chain("mainnet")
+@pytest.mark.chain("op")
 def test_deposit_only(zap, alice, constructor_args):
     amount = int(1e18)
     lp_token = Contract.from_abi(
@@ -43,3 +52,21 @@ def test_deposit_only(zap, alice, constructor_args):
     assert approx(
         lp_token.balanceOf(alice), initial_balance + lp_tokens_amount, PRECISION
     )
+
+
+@pytest.mark.chain("mainnet")
+@pytest.mark.chain("op")
+def test_slippage(zap, alice):
+    amount = int(1e18)
+    with brownie.reverts():
+        zap.deposit(amount, amount * 10, True, {"from": alice, "value": amount * 2})
+
+
+@pytest.mark.chain("mainnet")
+@pytest.mark.chain("op")
+def test_set_approvals(zap, alice, constructor_args):
+    seth_token = Contract.from_abi(
+        name="sETH", address=constructor_args[1], abi=ERC20_ABI
+    )
+    zap.set_approvals({"from": alice})
+    assert seth_token.allowance(zap, constructor_args[2]) == 2**256 - 1

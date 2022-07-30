@@ -1,7 +1,8 @@
+import brownie.network
 import pytest
 from brownie import SynthetixZap
 
-from .utils.const import ARGS
+from .utils.const import ARGS, OP
 
 
 def pytest_addoption(parser):
@@ -30,6 +31,13 @@ def pytest_runtest_setup(item):
 @pytest.fixture(scope="session")
 def chainhandle(pytestconfig):
     return pytestconfig.getoption("chain")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def chain_switch(chainhandle):
+    if chainhandle == OP:
+        brownie.network.disconnect()
+        brownie.network.connect("optimism-fork")
 
 
 @pytest.fixture(scope="session")
