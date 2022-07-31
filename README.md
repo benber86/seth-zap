@@ -18,6 +18,11 @@ The same contract can be deployed to Ethereum mainnet and Optimism.
 
 To install Brownie, use (the currently availabe 1.19 version does not yet support Vyper 0.3.4): `pip install git+git:github.com/eth-brownie/brownie.git#egg=eth-brownie`
 
+### Tests
+
+- Ethereum: `brownie test`
+- Optimism: `brownie test --chain op` (require an `optimism-fork` network to be setup with brownie)
+
 ### Deployment
 
 There is a deployment scripts in `/script` that can be run as follows, after creating an account in Brownie and updating the account's name in `deploy.py` 
