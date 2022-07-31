@@ -62,6 +62,6 @@ def constructor_args(chainhandle):
 
 @pytest.fixture(scope="session")
 def zap(owner, constructor_args):
-    zap = SynthetixZap.deploy(*constructor_args, {"from": owner})
+    zap = SynthetixZap.deploy(*constructor_args.values(), {"from": owner})
     zap.set_approvals({"from": owner})
     yield zap

@@ -18,7 +18,7 @@ def test_deposit_and_stake_on_convex(zap, alice, constructor_args):
     initial_balance = staker.balanceOf(alice)
     # estimate amount of curve lp tokens received
     lp_tokens_amount = estimate_curve_lp_tokens_received(
-        constructor_args[2], constructor_args[3], amount
+        constructor_args["_curve_pool"], constructor_args["_token_index"], amount
     )
     # execute tx
     zap.deposit(amount, 0, True, {"from": alice, "value": amount * 2})
@@ -40,12 +40,12 @@ def test_deposit_and_stake_on_convex_revert(zap, alice):
 def test_deposit_only(zap, alice, constructor_args):
     amount = int(1e18)
     lp_token = Contract.from_abi(
-        name="Curve LP token", address=constructor_args[4], abi=ERC20_ABI
+        name="Curve LP token", address=constructor_args["_lp_token"], abi=ERC20_ABI
     )
     initial_balance = lp_token.balanceOf(alice)
     # estimate amount of curve lp tokens received
     lp_tokens_amount = estimate_curve_lp_tokens_received(
-        constructor_args[2], constructor_args[3], amount
+        constructor_args["_curve_pool"], constructor_args["_token_index"], amount
     )
     # execute tx
     zap.deposit(amount, 0, False, {"from": alice, "value": amount * 2})
@@ -74,7 +74,7 @@ def test_revert_low_collat_ratio(zap, alice):
 @pytest.mark.chain("op")
 def test_set_approvals(zap, alice, constructor_args):
     seth_token = Contract.from_abi(
-        name="sETH", address=constructor_args[1], abi=ERC20_ABI
+        name="sETH", address=constructor_args["_seth"], abi=ERC20_ABI
     )
     zap.set_approvals({"from": alice})
-    assert seth_token.allowance(zap, constructor_args[2]) == 2**256 - 1
+    assert seth_token.allowance(zap, constructor_args["_curve_pool"]) == 2**256 - 1
